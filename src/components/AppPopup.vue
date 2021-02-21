@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col justify-center h-full gap-4 p-4">
+  <div v-if="isUnsplash" class="flex flex-col justify-center h-full gap-4 p-4">
     <div class="flex w-full gap-4">
       <button @click="clearData" class="bg-red-500 hover:bg-red-700">
         Clear
@@ -15,11 +15,11 @@
     <div class="flex gap-4">
       <div class="w-1/2">
         <div>Width</div>
-        <input type="number" v-model="width" name="width" class="w-full" />
+        <input type="number" v-model="width" name="width" />
       </div>
       <div class="w-1/2">
         <div>Height</div>
-        <input type="number" v-model="height" name="height" class="w-full" />
+        <input type="number" v-model="height" name="height" />
       </div>
     </div>
     <div class="">
@@ -35,9 +35,26 @@
       </div>
     </div>
   </div>
+  <div v-else class="flex items-center justify-center h-full p-4">
+    <div class="font-mono text-xl">
+      Please visit Unsplash.com and select an image to see all the actions
+      available.
+    </div>
+  </div>
 </template>
 
 <script>
+import Vue from 'vue'
+import Toast from 'vue-toastification'
+// Import the CSS or use your own!
+import 'vue-toastification/dist/index.css'
+
+const options = {
+  // You can set your default options here
+}
+
+Vue.use(Toast, options)
+
 const baseUrlApiUnsplash = 'https://source.unsplash.com'
 const baseUrlWebUnsplash = 'https://unsplash.com'
 
@@ -55,7 +72,6 @@ function copy(text) {
 }
 
 export default {
-  name: 'HelloWorld',
   data() {
     return {
       dimension: true,
@@ -65,6 +81,15 @@ export default {
       error: '',
       alt: '',
       credit: '',
+      isUnsplash: false,
+    }
+  },
+  async mounted() {
+    const url = await this.sendMessage('getUrl')
+    if (url === baseUrlWebUnsplash) {
+      this.isUnsplash = true
+    } else {
+      this.isUnsplash = false
     }
   },
   methods: {
@@ -125,9 +150,9 @@ export default {
     copyUrl() {
       const t = copy(this.url)
       if (t) {
-        console.log('Link has been copied')
+        this.$toast.success('Link has been copied.')
       } else {
-        console.error('Not copied')
+        this.$toast.info('Please copy the link.')
       }
     },
   },
@@ -137,6 +162,10 @@ export default {
 <style scoped>
 button {
   @apply w-1/2 h-12 text-white transition duration-500 ease-in-out;
+}
+
+input[type='number'] {
+  @apply text-white bg-coolGray-600 w-full;
 }
 
 .content {

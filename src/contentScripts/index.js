@@ -22,6 +22,9 @@ window.onload = function () {
       } else {
         sendResponse(null)
       }
+    } else if (msg.action === 'getUrl') {
+      const data = window.location.origin
+      sendResponse(data)
     }
   })
 }
