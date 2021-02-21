@@ -10,16 +10,31 @@
     </div>
     <div class="flex items-center h-10 gap-4">
       <div class="w-1/2">Dimension</div>
-      <input type="checkbox" v-model="dimension" name="dimension" />
+      <input
+        type="checkbox"
+        v-model="dimension"
+        name="dimension"
+        @change="storeData('dimension')"
+      />
     </div>
     <div class="flex gap-4">
       <div class="w-1/2">
         <div>Width</div>
-        <input type="number" v-model="width" name="width" />
+        <input
+          type="number"
+          v-model="width"
+          name="width"
+          @change="storeData('width')"
+        />
       </div>
       <div class="w-1/2">
         <div>Height</div>
-        <input type="number" v-model="height" name="height" />
+        <input
+          type="number"
+          v-model="height"
+          name="height"
+          @change="storeData('height')"
+        />
       </div>
     </div>
     <div class="">
@@ -37,8 +52,11 @@
   </div>
   <div v-else class="flex items-center justify-center h-full p-4">
     <div class="font-mono text-xl">
-      Please visit Unsplash.com and select an image to see all the actions
-      available.
+      Please visit
+      <a href="https://unsplash.com" alt="unsplash.com" target="_blank">
+        Unsplash.com</a
+      >
+      and select an image to see all the actions available.
     </div>
   </div>
 </template>
@@ -74,9 +92,9 @@ function copy(text) {
 export default {
   data() {
     return {
-      dimension: true,
-      width: '1900',
-      height: '400',
+      dimension: false,
+      width: '1920',
+      height: '1080',
       url: '',
       error: '',
       alt: '',
@@ -91,8 +109,35 @@ export default {
     } else {
       this.isUnsplash = false
     }
+    const width = await this.getFromStorage('width')
+    const height = await this.getFromStorage('height')
+    const dimension = await this.getFromStorage('dimension')
+    this.width = width?.width || this.width
+    this.height = height?.height || this.height
+    this.dimension = dimension?.dimension || this.dimension
   },
   methods: {
+    getFromStorage(key) {
+      return new Promise((resolve, reject) => {
+        chrome.storage.sync.get([key], (data) => {
+          resolve(data)
+        })
+      })
+    },
+    setToStorage(key, value) {
+      chrome.storage.sync.set({ [key]: value }, function () {
+        console.log('Value is set to ' + value)
+      })
+    },
+    storeData(key) {
+      if (key === 'width') {
+        this.setToStorage('width', this.width)
+      } else if (key === 'height') {
+        this.setToStorage('height', this.height)
+      } else if (key === 'dimension') {
+        this.setToStorage('dimension', this.dimension)
+      }
+    },
     sendMessage(action) {
       return new Promise((resolve, reject) => {
         chrome.tabs.query(

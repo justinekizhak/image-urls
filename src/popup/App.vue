@@ -10,7 +10,6 @@
         href="https://justine.kizhak.com"
         alt="Justine Kizhakkinedath"
         target="_blank"
-        class="transition duration-500 ease-in-out border-b-4 border-blue-500 hover:bg-blue-500 hover:border-0 hover:text-white"
         >Justine Kizhakkinedath</a
       >
     </div>
@@ -30,5 +29,9 @@ export default {
 html {
   width: 400px;
   height: 550px;
+}
+
+a {
+  @apply transition duration-500 ease-in-out border-b-4 border-blue-500 hover:bg-blue-500  hover:text-white;
 }
 </style>
