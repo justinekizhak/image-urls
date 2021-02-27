@@ -1,10 +1,21 @@
 <template>
   <div class="flex flex-col h-full text-white bg-coolGray-700">
-    <div class="p-4 border-b-2 border-gray-500">
+    <div
+      class="flex items-center justify-between p-4 border-b-2 border-gray-500"
+    >
       <h1 class="font-mono text-2xl">Get Unsplash image</h1>
+      <a
+        href="https://github.com/justinekizhak/image-urls"
+        target="_blank"
+        class="border-0 hover:bg-transparent"
+      >
+        <help-icon
+          class="w-5 transition-transform duration-300 ease-in-out hover:scale-125 transform-gpu"
+        />
+      </a>
     </div>
     <app-popup />
-    <div class="p-4 font-mono text-lg">
+    <div class="p-4 font-mono text-lg border-t border-gray-500">
       Created by
       <a
         href="https://justine.kizhak.com"
@@ -18,17 +29,18 @@
 
 <script>
 import AppPopup from '@/components/AppPopup.vue'
+import HelpIcon from '@/components/HelpIcon'
 
 export default {
   name: 'App',
-  components: { AppPopup },
+  components: { AppPopup, HelpIcon },
 }
 </script>
 
 <style>
 html {
   width: 400px;
-  height: 550px;
+  height: 100%;
 }
 
 a {

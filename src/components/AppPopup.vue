@@ -37,10 +37,16 @@
         />
       </div>
     </div>
-    <div class="">
+    <div>
       <div>Image URL</div>
       <div class="content">
         {{ error || url }}
+      </div>
+    </div>
+    <div>
+      <div>Alternate text</div>
+      <div class="content">
+        {{ error || alt }}
       </div>
     </div>
     <div>
@@ -50,7 +56,7 @@
       </div>
     </div>
   </div>
-  <div v-else class="flex items-center justify-center h-full p-4">
+  <div v-else class="flex items-center justify-center h-full p-4 my-32">
     <div class="font-mono text-xl">
       Please visit
       <a href="https://unsplash.com" alt="unsplash.com" target="_blank">
